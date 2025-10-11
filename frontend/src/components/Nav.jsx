@@ -6,10 +6,13 @@ const Nav = () => {
 
     return (
         <div className='bg-gray-700  text-white flex justify-center items-center gap-x-5 p-5'>
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/products">Home</NavLink>
             {/* <NavLink to="/products">Products< /NavLink> */}
             {user ? <>
-                <NavLink to="/admin/create-product">Create Product</NavLink>
+                <>
+                    {user && user.isAdmin && <NavLink to="/admin/create-product">Create Product</NavLink>
+                    }
+                </>
                 <NavLink to="/admin/user-profile">Profile</NavLink>
             </> : <>
                 <NavLink to="/login">login</NavLink>

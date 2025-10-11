@@ -9,6 +9,7 @@ import UpdateProduct from '../pages/admin/ProductDetails'
 import ProductDetails from '../pages/admin/ProductDetails'
 import { useSelector } from 'react-redux'
 import UserProfile from '../pages/users/UserProfile'
+import PageNotFound from '../pages/PageNotFound'
 
 const MainRoutes = () => {
 
@@ -17,7 +18,7 @@ const MainRoutes = () => {
 
     return (
         <Routes>
-            <Route path="/" element={users ? <Home /> : ""} />
+            <Route path="/" element={<Products />} />
             <Route path="/products" element={<Products />} />
             <Route path="/product/:id" element={<ProductDetails />} />
 
@@ -25,8 +26,9 @@ const MainRoutes = () => {
             <Route path="/register" element={<Register />} />
 
             <Route path="/admin/create-product" element={<CreateProduct />} />
-            <Route path="/admin/user-profile" element={<UserProfile
-            />} />
+            <Route path="/admin/user-profile" element={<UserProfile />} />
+
+            <Route path='*' element={<PageNotFound />} />
         </Routes>
     )
 }
