@@ -8,7 +8,7 @@ const UserProfile = () => {
 
 
 
-    const { userReducer: { users } } = useSelector(state => state)
+    const users = useSelector(state => state.userReducer.users)
 
     // from createproduct component
     const { register, reset, handleSubmit } = useForm({

@@ -13,13 +13,14 @@ const Register = () => {
     const RegisterHanlder = (user) => {
         user.id = nanoid()
         user.isAdmin = false
+        user.cart = []
         dispatch(asyncRegisterUser(user))
         navigate('/login')
     }
 
     return (
         <div className=' bg-black flex h-screen  justify-center'  >
-            <div className='flex absolute top-50 right-140'>
+            <div className='flex absolute top-50 '>
                 <form onSubmit={handleSubmit(RegisterHanlder)} className='flex flex-col mt-5 gap-4 pt-3 w-1/2 items-start'>
                     <input type="text"
                         {...register("username")}

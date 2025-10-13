@@ -15,7 +15,8 @@ const Login = () => {
 
     return (
         <div className='bg-black h-screen flex items-center justify-center'>
-            <div className='flex absolute top-50 right-140'>
+            <div className='flex absolute top-50'>
+
                 <form onSubmit={handleSubmit(LoginHandler)} className='flex flex-col gap-4 pt-3 w-1/2 items-start'>
                     <input type="email"
                         {...register("email")}
