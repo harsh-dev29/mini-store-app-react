@@ -1,13 +1,36 @@
-import React from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { asyncUpdateUser } from '../store/actions/userActions';
-
+import axios from '../api/AxiosConfig';
+import InfiniteScroll from 'react-infinite-scroll-component';
 const Products = () => {
     const dispatch = useDispatch()
 
     const users = useSelector((state) => state.userReducer.users)
-    const products = useSelector((state) => state.productReducer.products)
+    // const products = useSelector((state) => state.productReducer.products)
+
+    const [products, setproducts] = useState([])
+    const [hasMore, sethasMore] = useState(true)
+
+    const fetchProducts = async () => {
+        try {
+            const { data } = await axios.get(`/products?_limit=6&_start=${products.length}`)
+            if (!data.length == 0) {
+                sethasMore(true)
+                setproducts([...products, ...data])
+            } else {
+                sethasMore(false)
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+    useEffect(() => {
+        fetchProducts()
+    }, [])
 
     const addToCartHanddler = (product) => {
         const copyUser = { ...users, cart: [...users.cart] }
@@ -24,7 +47,7 @@ const Products = () => {
 
 
     const renderProducts = products.map(product => {
-        return <div className='w-[30%] p-3 mr-3 mb-3 border shadow' key={product.id}>
+        return <div className='w-[25%]  p-3 mr-3 mb-3 border shadow' key={product.id}>
             <img className='w-full h-[30vh] object-cover' src={product.image} alt="" />
             <h1>{product.title}</h1>
             <small>{product.description.slice(0, 100)}</small>
@@ -38,9 +61,28 @@ const Products = () => {
 
 
     return (
-        products.length > 0 ? <div className='h-screen p-10 w-full overflow-auto flex flex-wrap bg-black'>
-            <div className='flex w-[80%] flex-wrap h-[30vh]'>{renderProducts}</div>
-        </div> : "Loading...."
+        <div className=' flex p-10 bg-black'>
+            <InfiniteScroll
+
+                dataLength={products.length}
+                hasMore={hasMore}
+                next={fetchProducts}
+                loader={<h4>Loading......</h4>}
+                endMessage={
+                    <p style={{ textAlign: "center" }}>
+                        <b>Yay! you have seen it all </b>
+                    </p>
+                }
+            >
+                <div className="flex flex-wrap justify-center">
+                    <Suspense fallback={<h1 className='text-center text-5xl text-green-800'>LOADING.......</h1>}>
+
+                        {renderProducts}
+                    </Suspense>
+                </div>
+
+            </InfiniteScroll>
+        </div>
     )
 }
 
